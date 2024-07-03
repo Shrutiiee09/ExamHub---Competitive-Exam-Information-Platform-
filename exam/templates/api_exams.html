@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtered Exams - ExamHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        .card {
+            margin: 10px;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .card-content {
+            text-align: center;
+        }
+
+        .gfg1 {
+            color: rgb(78, 71, 71);
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .gfgd {
+            color: gray;
+        }
+
+        .btn {
+            padding: 0px 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="center-align">Filtered Exams</h1>
+        <div class="row" id="show_exams_here">
+            <!-- Exam details will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        var show_exams_here = document.getElementById("show_exams_here");
+
+        $(document).ready(function () {
+            // Make an API call to fetch filtered exams details
+            // Adjust the URL according to your Django API endpoint
+            fetch('/api/exams/filter/?educational_level=value1&state=value2&exam_type=value3')
+                .then(result => result.json())
+                .then(response => {
+                    var html = '';
+                    for (var i = 0; i < response.length; i++) {
+                        html += `
+                            <div class="col s12 m4">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <span class="gfg1">${response[i].name}</span>
+                                        <p class="gfgd">${response[i].description}</p>
+                                        <p class="ex23"> Exam Type: <strong>${response[i].exam_type}</strong></p>
+                                        <p class="ex23"> State: <strong>${response[i].state}</strong></p>
+                                        <br>
+                                        <button type="submit" class="btn">Register</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    show_exams_here.innerHTML = html;
+                });
+        });
+    </script>
+</body>
+
+</html>
